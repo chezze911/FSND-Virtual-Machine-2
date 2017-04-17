@@ -96,11 +96,21 @@ def showMenu(restaurant_id):
     return render_template('finalproject_menu.html', restaurant=restaurant, items=items)
 
 
-@app.route('/restaurant/<int:restaurant_id>/menu/new')
+@app.route('/restaurant/<int:restaurant_id>/menu/new', methods=['GET', 'POST'])
 def newMenuItem(restaurant_id):
-    
+    if request.method == 'POST':
+        newItem = MenuItem(name=request.form['name'].strip(), 
+                           description=request.form['description'].strip(), 
+                           price=request.form['price'].strip(), 
+                           course=request.form['course'].strip(), 
+                           restaurant_id=restaurant_id)
+        session.add(newItem)
+        session.commit()
+        flash('Menu item' + '"' + newItem.name + '"' + ' created.')
+        return redirect(url_for('showMenu', restaurant_id=restaurant_id))
+    else:
+        return render_template('finalproject_newMenuItem.html', restaurant_id=restaurant_id)
     #return "This page is for making a new menu item for restaurant %s" % restaurant_id
-    return render_template('finalproject_newMenuItem.html', restaurant_id=restaurant_id)
 
 
 @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/edit')
@@ -150,5 +160,6 @@ def deleteMenuItem(restaurant_id, menu_id):
 
 
 if __name__ == '__main__':
+    app.secret_key = 'super_secret_key'
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
