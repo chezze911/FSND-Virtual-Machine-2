@@ -57,6 +57,7 @@ def newRestaurant():
         newRestaurant = Restaurant(name=request.form['name'])
         session.add(newRestaurant)
         session.commit()
+        flash('New Restaurant' + '"' + newRestaurant.name + '"' + ' Successfully Created!')
         return redirect(url_for('showRestaurants'))
     #return "This page will be for making a new restaurant"
     else:
@@ -69,7 +70,11 @@ def editRestaurant(restaurant_id):
     if request.method == 'POST':
         if request.form['name']:
             editedRestaurant.name = request.form['name']
-            return redirect(url_for('showRestaurants'))
+        session.add(editedRestaurant)
+        session.commit()
+        flash('Restaurant name' + '"' + editedRestaurant.name + '"' + ' Successfully Updated!')
+        return redirect(url_for('showRestaurants'))
+        	
     #return "This page will be for editing restaurant %s" % restaurant_id
     else:
         return render_template('editRestaurant.html', restaurant=editedRestaurant)
@@ -81,6 +86,7 @@ def deleteRestaurant(restaurant_id):
     if request.method == 'POST':
         session.delete(restaurantToDelete)
         session.commit()
+        flash('Restaurant' + '"' + restaurantToDelete.name + '"' + ' Successfully Deleted!')
     	return redirect(url_for('showRestaurants', restaurant_id=restaurant_id))
     else:
         return render_template('deleteRestaurant.html', restaurant=restaurantToDelete)
@@ -129,7 +135,7 @@ def editMenuItem(restaurant_id, menu_id):
             editedItem.course = request.form['course']
         session.add(editedItem)
         session.commit()
-        flash('menu item' + '"' + editedItem.name + '"' + 'edited successfully!')
+        flash('menu item' + '"' + editedItem.name + '"' + ' Successfully Edited!')
         return redirect(url_for('showMenu', restaurant_id=restaurant_id))
     else:
         # USE THE RENDER_TEMPLATE FUNCTION BELOW TO SEE THE VARIABLES YOU
@@ -147,7 +153,7 @@ def deleteMenuItem(restaurant_id, menu_id):
     if request.method == 'POST':
         session.delete(itemToDelete)
         session.commit()
-        flash('menu item' + '"' + itemToDelete.name + '"' + 'deleted successfully!')
+        flash('menu item' + '"' + itemToDelete.name + '"' + ' Successfully Deleted!')
         return redirect(url_for('showMenu', restaurant_id=restaurant_id))
     else:
         return render_template('finalproject_deletemenuitem.html', restaurant_id=restaurant_id, menu_id=menu_id, item=itemToDelete)
