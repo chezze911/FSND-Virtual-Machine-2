@@ -33,7 +33,7 @@ class webServerHandler(BaseHTTPRequestHandler):
                 return
             if self.path.endswith("/edit"):
                 catalogIDPath = self.path.split("/")[2]
-                myRestaurantQuery = session.query(Catalog).filter_by(
+                myCatalogQuery = session.query(Catalog).filter_by(
                     id=catalogIDPath).one()
                 if myCatalogQuery:
                     self.send_response(200)
@@ -158,8 +158,8 @@ class webServerHandler(BaseHTTPRequestHandler):
 
 def main():
     try:
-        server = HTTPServer(('', 8050), webServerHandler)
-        print 'Web server running...open localhost:8050/catalogs in your browser'
+        server = HTTPServer(('', 5000), webServerHandler)
+        print 'Web server running...open localhost:5000/catalogs in your browser'
         server.serve_forever()
     except KeyboardInterrupt:
         print '^C received, shutting down server'

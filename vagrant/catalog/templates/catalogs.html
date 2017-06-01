@@ -1,55 +1,33 @@
-{% extends "main.html" %}
-{% block content %}
-{% include "catalog_header.html" %}
-	<div class="row top-menu">
-		<div class="col-md-10"></div>
-		<div class="col-md-2 text-right">
-					</div>
-	</div>
-	<div class="row divider blue">
-		<div class="col-md-12"></div>
-	</div>
-	<div class="row banner main">
-		<div class="col-md-1"></div>
-		<div class="col-md-11 padding-none">
-			<h1>Catalogs</h1>
-		</div>
-	</div>
-
-<div class = 'flash'>
-		      {% with messages = get_flashed_messages() %}
-      {% if messages %}
-          
-        <ul>
-        {% for message in messages %}
-            <li> <strong> {{ message }} </strong> </li>
-        {% endfor %}
-        </ul>
-        {% endif %}
-    {% endwith %}
-
-</div>
+<html>
+	<head>
 	
-	<div class="row padding-top padding-bottom">
-		<div class="col-md-1"></div>
-		<div class="col-md-10 padding-none">
-			<a href="{{url_for('newCatalog')}}">
-				<button class="btn btn-default" id="new-catalog">
-					<span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>Add Catalog
-				</button>
-			</a>
+	</head>
+	<body>
+		<div class = "pane">
+			<h1> Catalogs </h1>
+				<a href="{{url_for('newCatalog')}}"><h3> Create a New Catalog</h3></a>
+				<!--MESSAGE FLASHING EXAMPLE -->
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+
+<ul>
+{% for message in messages %}
+  <li><strong>{{message}}</strong></li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+
+				{% for catalog in catalogs %}
+
+				<a href="{{url_for('showItem', catalog_id=catalog.id)}}"><h2>{{catalog.name}}</h2></a>
+
+				<p><a href="{{url_for('editCatalog', catalog_id=catalog.id)}}">Edit Catalog</a></p>
+				<p><a href="{{url_for('deletecatalog', catalog_id=catalog.id)}}">Delete Catalog</a></p>
+				<br>
+				<br>
+
+				{% endfor %}
 		</div>
-		<div class="col-md-1"></div>
-	</div>
-	{% for catalog in catalogss %}
-		<a href = "{{url_for('showItem', catalog_id = catalog.id)}}">
-			<div class="row">
-				<div class="col-md-1"></div>
-					<div class="col-md-10 catalog-list">
-						<h3>{{catalog.name}}</h3>
-					</div>
-				<div class="col-md-1"></div>
-			</div>
-		</a>
-	{% endfor %}
-{% endblock %}
+	</body>
+</html>
