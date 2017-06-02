@@ -57,7 +57,7 @@ def CatalogItems(catalog_id):
     #     output += '</br>'
     #     output += i.description
     #     output += '</br>'
-    #     output += '</br>'
+    #     output += '</br>
     # return output
     return render_template('catalogs.html', catalog=catalog, items=items)
         
@@ -109,7 +109,7 @@ def deleteCatalog(catalog_id):
 
 @app.route('/catalog/<int:catalog_id>/items')
 def showItems(catalog_id):
-    catalogs = session.query(Catalog).filter_by(id=catalog_id).one()
+    catalog = session.query(Catalog).filter_by(id=catalog_id).one()
     items = session.query(CatalogItem).filter_by(catalog_id=catalog_id).all()
     return "This page is the items for catalog %s" % catalog_id
     #return render_template('catalog_items.html', catalog=catalog, items=items)
