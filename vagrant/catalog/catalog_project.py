@@ -117,18 +117,18 @@ def showItems(catalog_id):
 
 @app.route('/catalog/<int:catalog_id>/item/new', methods=['GET', 'POST'])
 def newCatalogItem(catalog_id):
-#     if request.method == 'POST':
-#         newItem = CatalogItem(name=request.form['name'].strip(), 
-#                            description=request.form['description'].strip(), 
-#                            price=request.form['price'].strip(), 
-#                            catalog_id=catalog_id)
-#         session.add(newItem)
-#         session.commit()
+    if request.method == 'POST':
+        newItem = CatalogItem(name=request.form['name'].strip(), 
+                           description=request.form['description'].strip(), 
+                           price=request.form['price'].strip(), 
+                           catalog_id=catalog_id)
+        session.add(newItem)
+        session.commit()
 #         flash('Catalog item' + '"' + newItem.name + '"' + ' created.')
 #         return redirect(url_for('showCatalog', catalog_id=catalog_id))
-#     else:
-#         return render_template('newcatalogitem.html', catalog_id=catalog_id)
-        return "This page is for making a new catalog item for catalog %s. Task 1 complete!" % catalog_id
+    else:
+        return render_template('newcatalogitem.html', catalog_id=catalog_id)
+        #return "This page is for making a new catalog item for catalog %s. Task 1 complete!" % catalog_id
 
 
 @app.route('/catalog/<int:catalog_id>/item/<int:item_id>/edit',
@@ -166,41 +166,6 @@ def deleteCatalogItem(catalog_id, item_id):
 #     else:
 #         return render_template('deletecatalogitem.html', catalog_id=catalog_id, item_id=item_id, item=itemToDelete)
 		return "This page is for deleting catalog item %s.  Task 3 complete!" % catalog_id
-	
-
-
-
-# def restaurantMenu(restaurant_id):
-#     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
-#     items = session.query(MenuItem).filter_by(restaurant_id=restaurant.id)
-#     output = ''
-#     for i in items:
-#         output += i.name
-#         output += '</br>'
-#         output += i.price
-#         output += '</br>'
-#         output += i.description
-#         output += '</br>'
-#         output += '</br>'
-#     return output
-
-# # Task 1: Create route for newMenuItem function here
-
-
-# def newMenuItem(restaurant_id):
-#     return "page to create a new menu item. Task 1 complete!"
-
-# # Task 2: Create route for editMenuItem function here
-
-
-# def editMenuItem(restaurant_id, menu_id):
-#     return "page to edit a menu item. Task 2 complete!"
-
-# # Task 3: Create a route for deleteMenuItem function here
-
-
-# def deleteMenuItem(restaurant_id, menu_id):
-#     return "page to delete a menu item. Task 3 complete!"
 
 
 if __name__ == '__main__':
