@@ -1,20 +1,17 @@
-<html>
-	<head>
-	
-	</head>
-	<body>
-	<h1> Are you sure you want to delete {{catalog.name}}? </h1>
-	
+{% extends "catalog_main.html" %}
+{% block content %}
+{% include "catalog_header.html" %}
+<h2> Are you sure you want to delete {{catalog.name}}? </h2>
 
-{% if catalog %}
 <form action="#" method = 'post'>
 
-<input type='submit', value = 'Delete'>
-
+	<button type="submit" class="btn btn-default delete" id="submit" type="submit">
+	<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>Delete</button>
+	<a href = '{{url_for('showCatalogs')}}'>
+		<button class="btn btn-default delete">
+		<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</button>
+	</a>
 
 </form>
-{% endif %}
 
-	<a href = '#'> Cancel </a>
-	</body>
-</html>
+{% endblock %}

@@ -49,7 +49,6 @@ def showRestaurants():
     restaurants = session.query(Restaurant).all()
     #return "This page will show all my my restaurants"
     return render_template('restaurants.html', restaurants=restaurants)
-    
 
 @app.route('/restaurant/new', methods=['GET', 'POST'])
 def newRestaurant():

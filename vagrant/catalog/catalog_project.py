@@ -3,6 +3,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from catalog_database_setup import Base, Catalog, CatalogItem
 
+# New imports for this step
+from flask import session as login_session
+import random
+import string
+
 app = Flask(__name__)
 
 engine = create_engine('sqlite:///catalogitem.db')
@@ -12,15 +17,34 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 
+# Create anti-forgery state token
+@app.route('/login')
+def showLogin():
+    state = ''.join(random.choice(string.ascii_uppercase + string.digits)
+                    for x in xrange(32))
+    login_session['state'] = state
+    #return "The current session state is %s" % login_session['state']
+    #RENDER LOGIN TEMPLATE
+    return render_template('catalog_login.html')
+
+# JSON APIs to view Catalog Information
+@app.route('/catalogs/JSON')
+def catalogsJSON():
+  catalogs = session.query(Catalog).all()
+  return jsonify(catalogs=[c.serialize for c in catalogs])
+
 #Making an API Endpoint (GET Request)
 @app.route('/catalogs/<int:catalog_id>/items/JSON')
-def catalogItemsJSON(catalog_id):
+def catalogJSON(catalog_id):
     catalog = session.query(Catalog).filter_by(id = catalog_id).one()
     items = session.query(CatalogItem).filter_by(catalog_id = catalog_id).all()
     return jsonify(CatalogItems=[i.serialize for i in items])
 
 
-@app.route('restaurants/<int:catalog_id>/items/<int:item_id>/JSON/')
+@app.route('/catalogs/<int:catalog_id>/items/<int:item_id>/JSON/')
+def catalogItemsJSON(catalog_id, item_id):
+    catalogItem = session.query(CatalogItem).filter_by(id = item_id).one()
+    return jsonify(CatalogItem = catalogItem.serialize)
 
 # #Fake Catalogs
 # catalog = {'name': 'The CRUDdy Crab', 'id': '1'}
@@ -57,7 +81,7 @@ def catalogItemsJSON(catalog_id):
 @app.route('/')
 @app.route('/catalogs/')
 def showCatalogs():
-    catalogs = session.query(Catalog).all()
+    catalogs = session.query(Catalog).order_by((Catalog.name))
     #return "This page will show all my catalogs"
     return render_template('catalogs.html', catalogs=catalogs)
 

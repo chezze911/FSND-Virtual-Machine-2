@@ -1,64 +1,59 @@
-<!-- <html>
-
-	<body>
-
-	<h1>{{catalog.name}}</h1>
-
-
-	{% for i in items %}
-
-		<div>
-
-		<p>{{i.name}}</p>
-
-		<p>{{i.description}}</p>
-
-		<p> {{i.price}} </p>
-
-		<a href='{{url_for('editCatalogItem', catalog_id = catalog.id, item_id = i.id) }}'>Edit</a>
-
-		</br>
-		<a href = '{{url_for('deleteCatalogItem', catalog_id = catalog.id, item_id = i.id ) }}'>Delete</a>
-
+{% extends "catalog_main.html" %}
+{% block content %}
+{% include "catalog_header.html" %}
+	<div class="row top-menu">
+		<div class="col-md-10"></div>
+		<div class="col-md-2 text-right">
+					</div>
+	</div>
+	<div class="row divider blue">
+		<div class="col-md-12"></div>
+	</div>
+	<div class="row banner main">
+		<div class="col-md-1"></div>
+		<div class="col-md-11 padding-none">
+			<h1>Catalogs</h1>
 		</div>
+	</div>
 
+<div class = 'flash'>
+		      {% with messages = get_flashed_messages() %}
+      {% if messages %}
 
-	{% endfor %}
-	</body>
+        <ul>
+        {% for message in messages %}
+            <li> <strong> {{ message }} </strong> </li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
 
-</html> -->
-
-
-<html>
-	<head>
+</div>
 	
-	</head>
-	<body>
-		<div class = "pane">
-			<h1> Catalogs </h1>
-				<a href="{{url_for('newCatalog')}}"><h3> Create a New Catalog</h3></a>
-				<!--MESSAGE FLASHING EXAMPLE -->
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-
-<ul>
-{% for message in messages %}
-  <li><strong>{{message}}</strong></li>
-  {% endfor %}
-</ul>
-{% endif %}
-{% endwith %}
-
-				{% for catalog in catalogs %}
-
-				<a href="{{url_for('showCatalogItems', catalog_id=catalog.id)}}"><h2>{{catalog.name}}</h2></a>
-
-				<p><a href="{{url_for('editCatalog', catalog_id=catalog.id)}}">Edit Catalog</a></p>
-				<p><a href="{{url_for('deleteCatalog', catalog_id=catalog.id)}}">Delete Catalog</a></p>
-				<br>
-				<br>
-
-				{% endfor %}
+	<div class="row padding-top padding-bottom">
+		<div class="col-md-1"></div>
+		<div class="col-md-10 padding-none">
+			<a href="{{url_for('newCatalog')}}">
+				<button class="btn btn-default" id="new-catalog">
+					<span class="glyphicon glyphicon-book" aria-hidden="true"></span>Add Catalog
+				</button>
+			</a>
 		</div>
-	</body>
-</html>
+		<div class="col-md-1"></div>
+	</div>
+
+	{% for catalog in catalogs %}
+		<a href = "{{url_for('showCatalogItems', catalog_id = catalog.id)}}">
+			<div class="row">
+				<div class="col-md-1"></div>
+					<div class="col-md-10 catalog-list">
+						<h3>{{catalog.name}}</h3>
+					</div>
+					<a href='{{url_for('editCatalog', catalog_id = catalog.id) }}'>Edit</a>
+					</br>
+					<a href = '{{url_for('deleteCatalog', catalog_id = catalog.id) }}'>Delete</a>
+				<div class="col-md-1"></div>
+			</div>
+		</a>
+	{% endfor %}
+{% endblock %}
