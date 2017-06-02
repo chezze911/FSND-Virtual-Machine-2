@@ -5,8 +5,14 @@
 		<p>Name:</p>
 		<input type = 'text' size='30' name = 'name' placeholder = '{{item.name}}'>
 
+		<p>Description:</p>
+	  	<input type="text" size='75' name="description" placeholder="{{item.description}}">
+
+	  	<p>Price:</p>
+	  	<input type="text" size='20' name="price" placeholder="{{item.price}}">
+
 		<input type='submit' value='Edit'>
 		</form>
-	<a href= '{{url_for('CatalogItems', catalog_id= item.catalog_id)}}'>Cancel</a>
+	<a href= '{{url_for('showCatalogItems', catalog_id= item.catalog_id)}}'>Cancel</a>
 	</body>
 </html>

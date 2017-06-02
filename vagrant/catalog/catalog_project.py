@@ -44,78 +44,89 @@ session = DBSession()
 
 #Show all Catalogs
 @app.route('/')
-@app.route('/catalogs/<int:catalog_id>/')
-def CatalogItems(catalog_id):
-    catalog = session.query(Catalog).first()
-    items = session.query(CatalogItem).filter_by(catalog_id = catalog.id)
+@app.route('/catalogs/')
+def showCatalogs():
+    catalogs = session.query(Catalog).all()
     #return "This page will show all my catalogs"
-    # output = ''
-    # for i in items:
-    #     output += i.name
-    #     output += '</br>'
-    #     output += i.price
-    #     output += '</br>'
-    #     output += i.description
-    #     output += '</br>'
-    #     output += '</br>
-    # return output
-    return render_template('catalogs.html', catalog=catalog, items=items)
+    return render_template('catalogs.html', catalogs=catalogs)
+
+
+# @app.route('/catalogs/<int:catalog_id>/items')
+# def CatalogItems(catalog_id):
+#     catalog = session.query(Catalog).first()
+#     items = session.query(CatalogItem).filter_by(catalog_id = catalog.id)
+#     #return "This page will show all my catalogs"
+#     # output = ''
+#     # for i in items:
+#     #     output += i.name
+#     #     output += '</br>'
+#     #     output += i.price
+#     #     output += '</br>'
+#     #     output += i.description
+#     #     output += '</br>'
+#     #     output += '</br>
+#     # return output
+#     return render_template('catalogs.html', catalog=catalog, items=items)
         
     
 
-@app.route('/catalogs/new', methods=['GET', 'POST'])
+@app.route('/catalogs/new', 
+           methods=['GET', 'POST'])
 def newCatalog():
-    # if request.method == 'POST':
-    #     newCatalog = Catalog(name=request.form['name'])
-    #     session.add(newCatalog)
-    #     session.commit()
-    #     flash('New Catalog' + '"' + newCatalog.name + '"' + ' Successfully Created!')
-        # return redirect(url_for('showCatalogs'))
-    return "This page will be for making a new catalog"
-    # else:
-    # 	return render_template('newCatalog.html')
+    if request.method == 'POST':
+        newCatalog = Catalog(name=request.form['name'])
+        session.add(newCatalog)
+        session.commit()
+        flash('New Catalog' + '"' + newCatalog.name + '"' + ' Successfully Created!')
+        return redirect(url_for('showCatalogs'))
+    #return "This page will be for making a new catalog"
+    else:
+    	return render_template('newCatalog.html')
 
 
-@app.route('/catalogs/<int:catalog_id>/edit', methods=['GET', 'POST'])
+@app.route('/catalogs/<int:catalog_id>/edit', 
+           methods=['GET', 'POST'])
 def editCatalog(catalog_id):
-    # editedCatalog = session.query(Catalog).filter_by(id=catalog_id).one()
-    # if request.method == 'POST':
-    #     if request.form['name']:
-    #         editedCatalog.name = request.form['name']
-    #     session.add(editedCatalog)
-    #     session.commit()
-    #     flash('Catalog name' + '"' + editedCatalog.name + '"' + ' Successfully Updated!')
-#         return redirect(url_for('showCatalogs'))
+    editedCatalog = session.query(Catalog).filter_by(id=catalog_id).one()
+    if request.method == 'POST':
+        if request.form['name']:
+            editedCatalog.name = request.form['name']
+        session.add(editedCatalog)
+        session.commit()
+        flash('Catalog name' + '"' + editedCatalog.name + '"' + ' Successfully Updated!')
+        return redirect(url_for('showCatalogs'))
         	
-    return "This page will be for editing catalog %s" % catalog_id
-#     else:
-#         return render_template('editCatalog.html', restaurant=editedCatalog)
+    #return "This page will be for editing catalog %s" % catalog_id
+    else:
+        return render_template('editCatalog.html', catalog=editedCatalog)
 
 
-@app.route('/catalogs/<int:catalog_id>/delete', methods=['GET', 'POST'])
+@app.route('/catalogs/<int:catalog_id>/delete', 
+           methods=['GET', 'POST'])
 def deleteCatalog(catalog_id):
-    # catalogToDelete = session.query(Catalog).filter_by(id=catalog_id).one()
-    # if request.method == 'POST':
-    #     session.delete(catalogToDelete)
-    #     session.commit()
-    #     flash('Catalog' + '"' + catalogToDelete.name + '"' + ' Successfully Deleted!')
-#     	return redirect(url_for('showCatalogs', catalog_id=catalog_id))
-#     else:
-#         return render_template('deleteCatalog.html', catalog=catalogToDelete)
+    catalogToDelete = session.query(Catalog).filter_by(id=catalog_id).one()
+    if request.method == 'POST':
+        session.delete(catalogToDelete)
+        session.commit()
+        flash('Catalog' + '"' + catalogToDelete.name + '"' + ' Successfully Deleted!')
+    	return redirect(url_for('showCatalogs', catalog_id=catalog_id))
+    else:
+        return render_template('deleteCatalog.html', catalog=catalogToDelete)
     
-    return "This page will be for deleting catalog %s" % catalog_id
+    #return "This page will be for deleting catalog %s" % catalog_id
 #     return render_template('deleteCatalog.html', catalog_id=catalog_id)
 
 
-@app.route('/catalogs/<int:catalog_id>/items')
-def showItems(catalog_id):
+@app.route('/catalogs/<int:catalog_id>/item')
+def showCatalogItems(catalog_id):
     catalog = session.query(Catalog).filter_by(id=catalog_id).one()
     items = session.query(CatalogItem).filter_by(catalog_id=catalog_id).all()
-    return "This page is the items for catalog %s" % catalog_id
-    #return render_template('catalog_items.html', catalog=catalog, items=items)
+    #return "This page is the items for catalog %s" % catalog_id
+    return render_template('catalog_items.html', catalog=catalog, items=items, catalog_id=catalog_id)
 
 
-@app.route('/catalogs/<int:catalog_id>/item/new', methods=['GET', 'POST'])
+@app.route('/catalogs/<int:catalog_id>/item/new', 
+           methods=['GET', 'POST'])
 def newCatalogItem(catalog_id):
     if request.method == 'POST':
         newItem = CatalogItem(name=request.form['name'].strip(), 
@@ -124,8 +135,8 @@ def newCatalogItem(catalog_id):
                            catalog_id=catalog_id)
         session.add(newItem)
         session.commit()
-#         flash('Catalog item' + '"' + newItem.name + '"' + ' created.')
-#         return redirect(url_for('showCatalog', catalog_id=catalog_id))
+        flash('Catalog item' + '"' + newItem.name + '"' + ' created!')
+        return redirect(url_for('showCatalogItems', catalog_id=catalog_id))
     else:
         return render_template('newcatalogitem.html', catalog_id=catalog_id)
         #return "This page is for making a new catalog item for catalog %s. Task 1 complete!" % catalog_id
@@ -134,7 +145,7 @@ def newCatalogItem(catalog_id):
 @app.route('/catalogs/<int:catalog_id>/item/<int:item_id>/edit',
            methods=['GET', 'POST'])
 def editCatalogItem(catalog_id, item_id):
-    editedItem = session.query(CatalogItem).filter_by(id=catalog_id).one()
+    editedItem = session.query(CatalogItem).filter_by(id=item_id).one()
     if request.method == 'POST':
         if request.form['name']:
             editedItem.name = request.form['name']
@@ -144,8 +155,8 @@ def editCatalogItem(catalog_id, item_id):
             editedItem.description = request.form['description']
         session.add(editedItem)
         session.commit()
-        #flash('catalog item' + '"' + editedItem.name + '"' + ' Successfully Edited!')
-        return redirect(url_for('CatalogItems', catalog_id=catalog_id))
+        flash('catalog item' + '"' + editedItem.name + '"' + ' Successfully Edited!')
+        return redirect(url_for('showCatalogItems', catalog_id=catalog_id))
     else:
         # USE THE RENDER_TEMPLATE FUNCTION BELOW TO SEE THE VARIABLES YOU
         # SHOULD USE IN YOUR EDITMENUITEM TEMPLATE
@@ -154,15 +165,16 @@ def editCatalogItem(catalog_id, item_id):
 
 
 
-@app.route('/catalogs/<int:catalog_id>/item/<int:item_id>/delete', methods=['GET', 'POST'])
+@app.route('/catalogs/<int:catalog_id>/item/<int:item_id>/delete', 
+           methods=['GET', 'POST'])
 def deleteCatalogItem(catalog_id, item_id):
     # catalog = session.query(Catalog).filter_by(id=catalog_id).one()
     itemToDelete = session.query(CatalogItem).filter_by(id=item_id).one()
     if request.method == 'POST':
         session.delete(itemToDelete)
         session.commit()
-        #flash('catalog item' + '"' + itemToDelete.name + '"' + ' Successfully Deleted!')
-        return redirect(url_for('CatalogItems', catalog_id=catalog_id))
+        flash('catalog item' + '"' + itemToDelete.name + '"' + ' Successfully Deleted!')
+        return redirect(url_for('showCatalogItems', catalog_id=catalog_id))
     else:
         return render_template('deletecatalogitem.html', item=itemToDelete)
 		#return "This page is for deleting catalog item %s.  Task 3 complete!" % catalog_id
