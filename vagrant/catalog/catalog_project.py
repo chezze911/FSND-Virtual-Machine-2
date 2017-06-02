@@ -18,8 +18,8 @@ session = DBSession()
 
 
 # #Fake Menu Items
-# items = [ {'name':'Cheese Pizza', 'description':'made with fresh cheese', 'price':'$5.99','course' :'Entree', 'id':'1'}, {'name':'Chocolate Cake','description':'made with Dutch Chocolate', 'price':'$3.99', 'course':'Dessert','id':'2'},{'name':'Caesar Salad', 'description':'with fresh organic vegetables','price':'$5.99', 'course':'Entree','id':'3'},{'name':'Iced Tea', 'description':'with lemon','price':'$.99', 'course':'Beverage','id':'4'},{'name':'Spinach Dip', 'description':'creamy dip with fresh spinach','price':'$1.99', 'course':'Appetizer','id':'5'} ]
-# item =  {'name':'Cheese Pizza','description':'made with fresh cheese','price':'$5.99','course' :'Entree'}
+# items = [ {'name':'Cheese Pizza', 'description':'made with fresh cheese', 'price':'$5.99','id':'1'}, {'name':'Chocolate Cake','description':'made with Dutch Chocolate', 'price':'$3.99','id':'2'},{'name':'Caesar Salad', 'description':'with fresh organic vegetables','price':'$5.99','id':'3'},{'name':'Iced Tea', 'description':'with lemon','price':'$.99','id':'4'},{'name':'Spinach Dip', 'description':'creamy dip with fresh spinach','price':'$1.99','id':'5'} ]
+# item =  {'name':'Cheese Pizza','description':'made with fresh cheese','price':'$5.99'}
 
 # JSON APIs to view Catalog Information
 # @app.route('/catalogs/JSON')
@@ -44,11 +44,23 @@ session = DBSession()
 
 #Show all Catalogs
 @app.route('/')
-@app.route('/catalogs/')
-def showCatalogs():
-    catalogs = session.query(Catalog).all()
-    return "This page will show all my catalogs"
-    # return render_template('catalogs.html', catalogs=catalogs)
+@app.route('/catalogs/<int:catalog_id>/')
+def CatalogItems(catalog_id):
+    catalog = session.query(Catalog).first()
+    items = session.query(CatalogItem).filter_by(catalog_id = catalog.id)
+    #return "This page will show all my catalogs"
+    output = ''
+    for i in items:
+        output += i.name
+        output += '</br>'
+        output += i.price
+        output += '</br>'
+        output += i.description
+        output += '</br>'
+        output += '</br>'
+    return output
+    #return render_template('catalogs.html', catalogs=catalogs)
+        
     
 
 @app.route('/catalog/new', methods=['GET', 'POST'])
@@ -95,12 +107,12 @@ def deleteCatalog(catalog_id):
 #     return render_template('deleteCatalog.html', catalog_id=catalog_id)
 
 
-# @app.route('/catalog/<int:catalog_id>/items')
-# def showItems(catalog_id):
-    # catalog = session.query(Catalog).filter_by(id=catalog_id).one()
-    # items = session.query(CatalogItem).filter_by(catalog_id=catalog_id).all()
-    # return "This page is the items for catalog %s" % catalog_id
-#     return render_template('catalog_items.html', catalog=catalog, items=items)
+@app.route('/catalog/<int:catalog_id>/items')
+def showItems(catalog_id):
+    catalogs = session.query(Catalog).filter_by(id=catalog_id).one()
+    items = session.query(CatalogItem).filter_by(catalog_id=catalog_id).all()
+    return "This page is the items for catalog %s" % catalog_id
+    #return render_template('catalog_items.html', catalog=catalog, items=items)
 
 
 @app.route('/catalog/<int:catalog_id>/item/new', methods=['GET', 'POST'])
@@ -116,7 +128,7 @@ def newCatalogItem(catalog_id):
 #         return redirect(url_for('showCatalog', catalog_id=catalog_id))
 #     else:
 #         return render_template('newcatalogitem.html', catalog_id=catalog_id)
-        return "This page is for making a new menu item for catalog %s" % catalog_id
+        return "This page is for making a new catalog item for catalog %s. Task 1 complete!" % catalog_id
 
 
 @app.route('/catalog/<int:catalog_id>/item/<int:item_id>/edit',
@@ -138,7 +150,7 @@ def editCatalogItem(catalog_id, item_id):
 #         # USE THE RENDER_TEMPLATE FUNCTION BELOW TO SEE THE VARIABLES YOU
 #         # SHOULD USE IN YOUR EDITMENUITEM TEMPLATE
 #         return render_template('editcatalogitem.html', catalog_id=catalog_id, item_id=item_id, item=editedItem)
-        return "This page is for editing catalog item %s" % catalog_id
+        return "This page is for editing catalog item %s.  Task 2 complete!" % catalog_id
 
 
 
@@ -153,7 +165,7 @@ def deleteCatalogItem(catalog_id, item_id):
 #         return redirect(url_for('showCatalog', catalog_id=catalog_id))
 #     else:
 #         return render_template('deletecatalogitem.html', catalog_id=catalog_id, item_id=item_id, item=itemToDelete)
-		return "This page is for deleting menu item %s" % catalog_id
+		return "This page is for deleting menu item %s.  Task 3 complete!" % catalog_id
 	
 
 
