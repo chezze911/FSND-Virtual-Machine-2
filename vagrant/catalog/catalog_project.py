@@ -63,7 +63,7 @@ def CatalogItems(catalog_id):
         
     
 
-@app.route('/catalog/new', methods=['GET', 'POST'])
+@app.route('/catalogs/new', methods=['GET', 'POST'])
 def newCatalog():
     # if request.method == 'POST':
     #     newCatalog = Catalog(name=request.form['name'])
@@ -76,7 +76,7 @@ def newCatalog():
     # 	return render_template('newCatalog.html')
 
 
-@app.route('/catalog/<int:catalog_id>/edit', methods=['GET', 'POST'])
+@app.route('/catalogs/<int:catalog_id>/edit', methods=['GET', 'POST'])
 def editCatalog(catalog_id):
     # editedCatalog = session.query(Catalog).filter_by(id=catalog_id).one()
     # if request.method == 'POST':
@@ -92,7 +92,7 @@ def editCatalog(catalog_id):
 #         return render_template('editCatalog.html', restaurant=editedCatalog)
 
 
-@app.route('/catalog/<int:catalog_id>/delete', methods=['GET', 'POST'])
+@app.route('/catalogs/<int:catalog_id>/delete', methods=['GET', 'POST'])
 def deleteCatalog(catalog_id):
     # catalogToDelete = session.query(Catalog).filter_by(id=catalog_id).one()
     # if request.method == 'POST':
@@ -107,7 +107,7 @@ def deleteCatalog(catalog_id):
 #     return render_template('deleteCatalog.html', catalog_id=catalog_id)
 
 
-@app.route('/catalog/<int:catalog_id>/items')
+@app.route('/catalogs/<int:catalog_id>/items')
 def showItems(catalog_id):
     catalog = session.query(Catalog).filter_by(id=catalog_id).one()
     items = session.query(CatalogItem).filter_by(catalog_id=catalog_id).all()
@@ -115,7 +115,7 @@ def showItems(catalog_id):
     #return render_template('catalog_items.html', catalog=catalog, items=items)
 
 
-@app.route('/catalog/<int:catalog_id>/item/new', methods=['GET', 'POST'])
+@app.route('/catalogs/<int:catalog_id>/item/new', methods=['GET', 'POST'])
 def newCatalogItem(catalog_id):
     if request.method == 'POST':
         newItem = CatalogItem(name=request.form['name'].strip(), 
@@ -131,7 +131,7 @@ def newCatalogItem(catalog_id):
         #return "This page is for making a new catalog item for catalog %s. Task 1 complete!" % catalog_id
 
 
-@app.route('/catalog/<int:catalog_id>/item/<int:item_id>/edit',
+@app.route('/catalogs/<int:catalog_id>/item/<int:item_id>/edit',
            methods=['GET', 'POST'])
 def editCatalogItem(catalog_id, item_id):
     editedItem = session.query(CatalogItem).filter_by(id=catalog_id).one()
@@ -154,18 +154,18 @@ def editCatalogItem(catalog_id, item_id):
 
 
 
-@app.route('/catalog/<int:catalog_id>/item/<int:item_id>/delete', methods=['GET', 'POST'])
+@app.route('/catalogs/<int:catalog_id>/item/<int:item_id>/delete', methods=['GET', 'POST'])
 def deleteCatalogItem(catalog_id, item_id):
-#     catalog = session.query(Catalog).filter_by(id=catalog_id).one()
-#     itemToDelete = session.query(CatalogItem).filter_by(id=item_id).one()
-#     if request.method == 'POST':
-#         session.delete(itemToDelete)
-#         session.commit()
-#         flash('catalog item' + '"' + itemToDelete.name + '"' + ' Successfully Deleted!')
-#         return redirect(url_for('showCatalog', catalog_id=catalog_id))
-#     else:
-#         return render_template('deletecatalogitem.html', catalog_id=catalog_id, item_id=item_id, item=itemToDelete)
-		return "This page is for deleting catalog item %s.  Task 3 complete!" % catalog_id
+    # catalog = session.query(Catalog).filter_by(id=catalog_id).one()
+    itemToDelete = session.query(CatalogItem).filter_by(id=item_id).one()
+    if request.method == 'POST':
+        session.delete(itemToDelete)
+        session.commit()
+        #flash('catalog item' + '"' + itemToDelete.name + '"' + ' Successfully Deleted!')
+        return redirect(url_for('CatalogItems', catalog_id=catalog_id))
+    else:
+        return render_template('deletecatalogitem.html', item=itemToDelete)
+		#return "This page is for deleting catalog item %s.  Task 3 complete!" % catalog_id
 
 
 if __name__ == '__main__':
