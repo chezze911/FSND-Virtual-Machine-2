@@ -134,23 +134,23 @@ def newCatalogItem(catalog_id):
 @app.route('/catalog/<int:catalog_id>/item/<int:item_id>/edit',
            methods=['GET', 'POST'])
 def editCatalogItem(catalog_id, item_id):
-#     editedItem = session.query(CatalogItem).filter_by(id=catalog_id).one()
-#     if request.method == 'POST':
-#         if request.form['name']:
-#             editedItem.name = request.form['name']
-#         if request.form['price']:
-#             editedItem.price = request.form['price']
-#         if request.form['description']:
-#             editedItem.description = request.form['description']
-#         session.add(editedItem)
-#         session.commit()
-#         flash('catalog item' + '"' + editedItem.name + '"' + ' Successfully Edited!')
-#         return redirect(url_for('showCatalog', catalog_id=catalog_id))
-#     else:
-#         # USE THE RENDER_TEMPLATE FUNCTION BELOW TO SEE THE VARIABLES YOU
-#         # SHOULD USE IN YOUR EDITMENUITEM TEMPLATE
-#         return render_template('editcatalogitem.html', catalog_id=catalog_id, item_id=item_id, item=editedItem)
-        return "This page is for editing catalog item %s.  Task 2 complete!" % catalog_id
+    editedItem = session.query(CatalogItem).filter_by(id=catalog_id).one()
+    if request.method == 'POST':
+        if request.form['name']:
+            editedItem.name = request.form['name']
+        if request.form['price']:
+            editedItem.price = request.form['price']
+        if request.form['description']:
+            editedItem.description = request.form['description']
+        session.add(editedItem)
+        session.commit()
+        #flash('catalog item' + '"' + editedItem.name + '"' + ' Successfully Edited!')
+        return redirect(url_for('CatalogItems', catalog_id=catalog_id))
+    else:
+        # USE THE RENDER_TEMPLATE FUNCTION BELOW TO SEE THE VARIABLES YOU
+        # SHOULD USE IN YOUR EDITMENUITEM TEMPLATE
+        return render_template('editcatalogitem.html', catalog_id=catalog_id, item_id=item_id, item=editedItem)
+        #return "This page is for editing catalog item %s.  Task 2 complete!" % catalog_id
 
 
 
