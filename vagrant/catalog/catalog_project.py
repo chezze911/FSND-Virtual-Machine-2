@@ -49,17 +49,17 @@ def CatalogItems(catalog_id):
     catalog = session.query(Catalog).first()
     items = session.query(CatalogItem).filter_by(catalog_id = catalog.id)
     #return "This page will show all my catalogs"
-    output = ''
-    for i in items:
-        output += i.name
-        output += '</br>'
-        output += i.price
-        output += '</br>'
-        output += i.description
-        output += '</br>'
-        output += '</br>'
-    return output
-    #return render_template('catalogs.html', catalogs=catalogs)
+    # output = ''
+    # for i in items:
+    #     output += i.name
+    #     output += '</br>'
+    #     output += i.price
+    #     output += '</br>'
+    #     output += i.description
+    #     output += '</br>'
+    #     output += '</br>'
+    # return output
+    return render_template('catalogs.html', catalog=catalog, items=items)
         
     
 
@@ -165,7 +165,7 @@ def deleteCatalogItem(catalog_id, item_id):
 #         return redirect(url_for('showCatalog', catalog_id=catalog_id))
 #     else:
 #         return render_template('deletecatalogitem.html', catalog_id=catalog_id, item_id=item_id, item=itemToDelete)
-		return "This page is for deleting menu item %s.  Task 3 complete!" % catalog_id
+		return "This page is for deleting catalog item %s.  Task 3 complete!" % catalog_id
 	
 
 
