@@ -1,18 +1,27 @@
 <html>
+	<head>
+		<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+	</head>
 	<body>
+		<h1> Edit Catalog Item </h1>
+
 		<form action= "{{url_for('editCatalogItem', catalog_id = catalog_id, item_id=item.id)}}" method = 'POST'>
 
-		<p>Name:</p>
-		<input type = 'text' size='30' name = 'name' placeholder = '{{item.name}}'>
+		<dl>
+			<dt>Name:</dt>
+			<dd><input type = 'text' size='30' name = 'name' placeholder = '{{item.name}}'></dd>
 
-		<p>Description:</p>
-	  	<input type="text" size='75' name="description" placeholder="{{item.description}}">
+			<dt>Description:</dt>
+		  	<dd><input type="text" size='75' name="description" placeholder="{{item.description}}"></dd>
 
-	  	<p>Price:</p>
-	  	<input type="text" size='20' name="price" placeholder="{{item.price}}">
+		  	<dt>Price:</dt>
+		  	<dd><input type="text" size='20' name="price" placeholder="{{item.price}}"></dd>
 
-		<input type='submit' value='Edit'>
+		</dl>
+
+			<input type='submit' value='Edit'>
+		
+			<a href= '{{url_for('showCatalogItems', catalog_id= item.catalog_id)}}'>Cancel</a>
 		</form>
-	<a href= '{{url_for('showCatalogItems', catalog_id= item.catalog_id)}}'>Cancel</a>
 	</body>
 </html>

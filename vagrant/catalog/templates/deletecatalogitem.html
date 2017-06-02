@@ -1,5 +1,9 @@
 <html>
 
+	<head>
+		<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+	</head>
+
 	<body>
 	<h1> Are you sure you want to delete {{item.name}}? </h1>
 
@@ -9,7 +13,7 @@
 
 		</form>
 
-	<a href = "{{ url_for('showCatalogItems', catalog_id = item.catalog_id)}}"> Cancel </a>
+		<a href = "{{ url_for('showCatalogItems', catalog_id = item.catalog_id)}}"> Cancel </a>
 	</body>
 
 </html>

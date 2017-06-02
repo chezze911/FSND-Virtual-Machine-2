@@ -11,6 +11,17 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
+
+#Making an API Endpoint (GET Request)
+@app.route('/catalogs/<int:catalog_id>/items/JSON')
+def catalogItemsJSON(catalog_id):
+    catalog = session.query(Catalog).filter_by(id = catalog_id).one()
+    items = session.query(CatalogItem).filter_by(catalog_id = catalog_id).all()
+    return jsonify(CatalogItems=[i.serialize for i in items])
+
+
+@app.route('restaurants/<int:catalog_id>/items/<int:item_id>/JSON/')
+
 # #Fake Catalogs
 # catalog = {'name': 'The CRUDdy Crab', 'id': '1'}
 
@@ -67,8 +78,7 @@ def showCatalogs():
 #     #     output += '</br>
 #     # return output
 #     return render_template('catalogs.html', catalog=catalog, items=items)
-        
-    
+
 
 @app.route('/catalogs/new', 
            methods=['GET', 'POST'])
@@ -160,7 +170,8 @@ def editCatalogItem(catalog_id, item_id):
     else:
         # USE THE RENDER_TEMPLATE FUNCTION BELOW TO SEE THE VARIABLES YOU
         # SHOULD USE IN YOUR EDITMENUITEM TEMPLATE
-        return render_template('editcatalogitem.html', catalog_id=catalog_id, item_id=item_id, item=editedItem)
+        return render_template(
+            'editcatalogitem.html', catalog_id=catalog_id, item_id=item_id, item=editedItem)
         #return "This page is for editing catalog item %s.  Task 2 complete!" % catalog_id
 
 

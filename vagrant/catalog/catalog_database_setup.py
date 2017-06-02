@@ -9,7 +9,7 @@ Base = declarative_base()
  
 class Catalog(Base):
     __tablename__ = 'catalog'
-   
+
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     
@@ -21,7 +21,6 @@ class Catalog(Base):
         return {
             'id': self.id,
             'name': self.name,
-            
         }
  
 class CatalogItem(Base):
@@ -47,4 +46,6 @@ class CatalogItem(Base):
         }
 
 engine = create_engine('sqlite:///catalogitem.db')
+
+
 Base.metadata.create_all(engine)
