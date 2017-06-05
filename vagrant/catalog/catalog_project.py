@@ -33,7 +33,7 @@ def showLogin():
     login_session['state'] = state
     #return "The current session state is %s" % login_session['state']
     #RENDER LOGIN TEMPLATE
-    return render_template('catalog_login.html')
+    return render_template('catalog_login.html', STATE=state)
 
 
 @app.route('/gconnect', methods=['POST'])
@@ -48,7 +48,7 @@ def gconnect():
 
     try:
         # Upgrade the authorization code into a credentials object
-        oauth_flow = flow_from_clientsecrets('client_secrets.json', scope='')
+        oauth_flow = flow_from_clientsecrets('catalog_client_secrets.json', scope='')
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
@@ -94,7 +94,7 @@ def gconnect():
         return response
 
     # Store the access token in the session for later use.
-    login_session['credentials'] = credentials.access_token
+    login_session['access_token'] = credentials.access_token
     login_session['gplus_id'] = gplus_id
 
     # Get user info
@@ -107,6 +107,14 @@ def gconnect():
     login_session['username'] = data['name']
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
+    # ADD PROVIDER TO LOGIN SESSION
+    # login_session['provider'] = 'google'
+
+    # # see if user exists, if it doesn't make a new one
+    # user_id = getUserID(data["email"])
+    # if not user_id:
+    #     user_id = createUser(login_session)
+    # login_session['user_id'] = user_id
 
     output = ''
     output += '<h1>Welcome, '
@@ -119,6 +127,31 @@ def gconnect():
     print "done!"
     return output
 
+# User Helper Functions
+
+
+# def createUser(login_session):
+#     newUser = User(name=login_session['username'], email=login_session[
+#                    'email'], picture=login_session['picture'])
+#     session.add(newUser)
+#     session.commit()
+#     user = session.query(User).filter_by(email=login_session['email']).one()
+#     return user.id
+
+
+# def getUserInfo(user_id):
+#     user = session.query(User).filter_by(id=user_id).one()
+#     return user
+
+
+# def getUserID(email):
+#     try:
+#         user = session.query(User).filter_by(email=email).one()
+#         return user.id
+#     except:
+#         return None
+
+# DISCONNECT - Revoke a current user's token and reset their login_session
 
 # JSON APIs to view Catalog Information
 @app.route('/catalogs/JSON')
