@@ -80,7 +80,7 @@
     cookie     : true,  // enable cookies to allow the server to access 
                         // the session
     xfbml      : true,  // parse social plugins on this page
-    version    : 'v2.2' // use version 2.2
+    version    : 'v2.9' // use version 2.9
   });
   };
   // Load the SDK asynchronously
@@ -123,14 +123,17 @@
   }
 </script>
 
-
+<div id='fb-root'<</div>
 <button>
          
 
           <fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();">
-<a href='javascript:sendTokenToServer()'>Login with Facebook</a>
+          <a href='javascript:sendTokenToServer()'>Login with Facebook</a>
 
-</fb:login-button>
+          </fb:login-button>
+
+</button>
+<!--END FACEBOOK SIGN IN -->
 
   </body>
 
