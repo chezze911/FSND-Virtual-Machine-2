@@ -1,31 +1,3 @@
-<!-- <html>
-	<head>
-		<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
-	</head>
-  <body>
-     <h1>New Catalog Item</h1>
-     <div class = 'pane'>
-	     <form action="{{url_for('newCatalogItem', catalog_id=catalog_id)}}" method = 'POST'>
-     <dl>
-     	<dt>Name</dt>
-     		<dd><input type="text" size='30' name='name'></dd>
-
-		<dt>Description:</dt>
-			<dd><input type="text" size='75' name="description"></dd>
-
-		<dt>Price:</dt>
-			<dd><input type="text" size='20' name="price"></dd>
-
-  	</dl>
-
-     <input type="submit" value="Create">
-     
-     </form>
- 	 </div>
- 	 
-   </body>
-</html> -->
-
 {% extends "catalog_main.html" %}
 {% block content %}
 {% include "catalog_header.html" %}
