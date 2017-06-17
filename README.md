@@ -24,7 +24,7 @@ Other systems: Use your favorite terminal program.
 From the terminal, run:
 
 git clone https://github.com/chezze911/FSND-Virtual-Machine-2
-This will give you a directory named oauth complete with the source code for the flask application, a vagrantfile, and a bootstrap.sh file for installing all of the necessary tools.
+This will give you a directory named catalog complete with the source code for the flask application, a vagrantfile, and a bootstrap.sh file for installing all of the necessary tools.
 
 Run the virtual machine!
 
